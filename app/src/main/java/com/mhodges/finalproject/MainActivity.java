@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.activity_main_drawer_news :
                 break;
             case R.id.activity_main_drawer_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, TestFragment.newInstance()).commit();
                 break;
             case R.id.activity_main_drawer_settings:
                 break;
