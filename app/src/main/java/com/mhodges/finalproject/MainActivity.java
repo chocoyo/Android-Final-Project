@@ -15,9 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,8 +63,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .build(),
                     RC_SIGN_IN);
         }
-
-
+        else  {
+            FirebaseUser user = mAuth.getCurrentUser();
+            setUpUIForUser(user);
+        }
 
 
         this.configureToolBar();
@@ -69,15 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.configureDrawerLayout();
 
         this.configureNavigationView();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        setUpUIForUser(user);
     }
 
     private void setUpUIForUser(FirebaseUser user){
@@ -98,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                setUpUIForUser(user);
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -141,6 +138,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, TestFragment.newInstance()).commit();
                 break;
             case R.id.activity_main_drawer_settings:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getApplicationContext(), "Sign Out Successful", Toast.LENGTH_LONG).show();
+                            }
+                        });
                 break;
             default:
                 break;
