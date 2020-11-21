@@ -7,11 +7,4 @@
         android:icon="@android:drawable/ic_menu_manage"
         android:title="refresh"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_settings"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Settings"
-        app:showAsAction="never" />
-
 </menu>

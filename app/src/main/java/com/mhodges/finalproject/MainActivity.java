@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -64,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         switch (id){
-            case R.id.activity_main_drawer_news :
+            case R.id.activity_main_drawer_news:
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
                 break;
             case R.id.activity_main_drawer_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, TestFragment.newInstance()).commit();
@@ -113,10 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 Log.d("JG", "refresh menu item");
-                returnVal = true;
-                break;
-            case R.id.action_settings:
-                Log.d("JG", "settings menu item");
                 returnVal = true;
                 break;
         }
