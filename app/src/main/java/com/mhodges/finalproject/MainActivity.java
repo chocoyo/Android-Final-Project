@@ -13,14 +13,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int RC_SIGN_IN = 0;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -31,11 +42,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        if (mAuth.getCurrentUser() == null)
+        {
+            // Choose authentication providers
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                    new AuthUI.IdpConfig.GoogleBuilder().build());
+
+
+            // Create and launch sign-in intent
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .build(),
+                    RC_SIGN_IN);
+        }
+
+
+
+
         this.configureToolBar();
 
         this.configureDrawerLayout();
 
         this.configureNavigationView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        setUpUIForUser(user);
+    }
+
+    private void setUpUIForUser(FirebaseUser user){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+        ((TextView) headerView.findViewById(R.id.tvUsername)).setText(user.getDisplayName());
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+            }
+        }
     }
 
     //to inflate the xml menu file
@@ -66,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.activity_main_drawer_news:
-                Intent intent = new Intent(this, Login.class);
-                startActivity(intent);
                 break;
             case R.id.activity_main_drawer_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, TestFragment.newInstance()).commit();
