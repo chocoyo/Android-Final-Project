@@ -8,15 +8,18 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +28,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -81,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerView = navigationView.getHeaderView(0);
 
         ((TextView) headerView.findViewById(R.id.tvUsername)).setText(user.getDisplayName());
+
+        Uri photoURL = user.getPhotoUrl();
+        if (photoURL != null)
+        {
+            ImageView imageView = (ImageView) headerView.findViewById(R.id.ivProfilePicture);
+            Glide.with(this).load(photoURL.toString()).into(imageView);
+        }
     }
 
 
