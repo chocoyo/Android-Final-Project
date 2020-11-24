@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .signOut(this)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete(@NonNull Task<Void> task) {
+                                finish();
+                                startActivity(new Intent(MainActivity.this, MainActivity.this.getClass()));
                                 Toast.makeText(getApplicationContext(), "Sign Out Successful", Toast.LENGTH_LONG).show();
                             }
                         });
