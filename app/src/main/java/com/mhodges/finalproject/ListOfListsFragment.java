@@ -2,13 +2,24 @@ package com.mhodges.finalproject;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +27,7 @@ import java.util.List;
 
 public class ListOfListsFragment extends Fragment {
     private RecyclerView recyclerView;
+    private FirebaseFirestore db;
 
     public static ListOfListsFragment newInstance() {
         return new ListOfListsFragment();
@@ -25,7 +37,26 @@ public class ListOfListsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        db = FirebaseFirestore.getInstance();
 
+    }
+
+    private void NewListButton(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List<ItemList> test = new ArrayList<>();
+
+        ItemList it = new ItemList(user.getUid());
+        it.setName("New Name");
+
+        ItemList it2 = new ItemList(user.getUid());
+        it2.setName("New Name2");
+
+        ItemList it3 = new ItemList(user.getUid());
+        it3.setName("New Name3");
+
+        test.add(it);
+        test.add(it3);
+        test.add(it2);
     }
 
     @Override
@@ -35,29 +66,30 @@ public class ListOfListsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_listoflists, container, false);
         recyclerView = view.findViewById(R.id.rvDataList);
 
-        List<ItemList> test = new ArrayList<>();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        ItemList it = new ItemList();
-        it.setName("New Name");
+        List<ItemList> lists = new ArrayList<>();
 
-        ItemList it2 = new ItemList();
-        it2.setName("New Name2");
+        db.collection("lists").whereEqualTo("userID", user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                lists.add(document.toObject(ItemList.class));
 
-        ItemList it3 = new ItemList();
-        it3.setName("New Name3");
+                                ListOfListAdapter adapter = new ListOfListAdapter(getContext(), lists);
 
-        test.add(it);
-        test.add(it3);
-        test.add(it2);
-
-
-
-
-        ListOfListAdapter adapter = new ListOfListAdapter(getContext(), test);
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(adapter);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+                                recyclerView.setLayoutManager(gridLayoutManager);
+                                recyclerView.setAdapter(adapter);
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "Error Retriving Lists", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
         return view;
     }
