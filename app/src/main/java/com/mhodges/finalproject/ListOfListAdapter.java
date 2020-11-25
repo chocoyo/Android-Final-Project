@@ -55,7 +55,6 @@ public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("MH", "onClick: " + items.get(getAdapterPosition()).getName());
                     ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
                             .replace(R.id.activity_main_frame_layout, ListOfItemsFragment.newInstance(items.get(getAdapterPosition()))).commit();
                 }
