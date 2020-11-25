@@ -35,16 +35,21 @@ public class ListOfListsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_listoflists, container, false);
         recyclerView = view.findViewById(R.id.rvDataList);
 
-        List<String> test = new ArrayList<>();
+        List<ItemList> test = new ArrayList<>();
 
-        test.add("1");
-        test.add("T2");
-        test.add("T2");
-        test.add("T2");
-        test.add("T3");        test.add("T2");
-        test.add("T2");
-        test.add("T2");
-        test.add("T2");
+        ItemList it = new ItemList();
+        it.setName("New Name");
+
+        ItemList it2 = new ItemList();
+        it2.setName("New Name2");
+
+        ItemList it3 = new ItemList();
+        it3.setName("New Name3");
+
+        test.add(it);
+        test.add(it3);
+        test.add(it2);
+
 
 
 

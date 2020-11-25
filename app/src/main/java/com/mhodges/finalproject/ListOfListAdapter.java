@@ -13,11 +13,11 @@ import java.util.List;
 
 public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.ViewHolder> {
 
-    List<String> items;
+    List<ItemList> items;
     LayoutInflater layoutInflater;
 
 
-    public ListOfListAdapter(Context context, List<String> items){
+    public ListOfListAdapter(Context context, List<ItemList> items){
         layoutInflater = LayoutInflater.from(context);
         this.items = items;
 
@@ -32,7 +32,7 @@ public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.title.setText(items.get(position));
+        holder.title.setText(items.get(position).getName());
     }
 
     @Override
