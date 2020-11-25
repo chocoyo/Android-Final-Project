@@ -28,7 +28,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.activity_main_drawer_news:
                 break;
             case R.id.activity_main_drawer_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, TestFragment.newInstance()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, ListOfListsFragment.newInstance()).commit();
                 break;
             case R.id.activity_main_drawer_settings:
                 AuthUI.getInstance()
