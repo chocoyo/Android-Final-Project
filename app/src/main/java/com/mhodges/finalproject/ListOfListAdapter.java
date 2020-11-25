@@ -1,10 +1,12 @@
 package com.mhodges.finalproject;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,6 +47,13 @@ public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.txtTitle);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("MH", "onClick: " + items.get(getAdapterPosition()).getName());
+                }
+            });
         }
     }
 }
