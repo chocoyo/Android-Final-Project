@@ -1,5 +1,6 @@
 package com.mhodges.finalproject;
 
+import android.app.AppComponentFactory;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -17,11 +19,13 @@ public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.Vi
 
     List<ItemList> items;
     LayoutInflater layoutInflater;
+    private Context context;
 
 
     public ListOfListAdapter(Context context, List<ItemList> items){
         layoutInflater = LayoutInflater.from(context);
         this.items = items;
+        this.context = context;
 
     }
 
@@ -52,6 +56,8 @@ public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.Vi
                 @Override
                 public void onClick(View view) {
                     Log.d("MH", "onClick: " + items.get(getAdapterPosition()).getName());
+                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.activity_main_frame_layout, ListOfItemsFragment.newInstance(items.get(getAdapterPosition()))).commit();
                 }
             });
         }

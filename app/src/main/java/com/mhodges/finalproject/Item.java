@@ -1,6 +1,11 @@
 package com.mhodges.finalproject;
 
+import com.google.firebase.firestore.DocumentId;
+
 public class Item {
+    @DocumentId
+    private String documentId;
+
     private String name;
     private double price;
     private String description;
@@ -37,5 +42,13 @@ public class Item {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 }

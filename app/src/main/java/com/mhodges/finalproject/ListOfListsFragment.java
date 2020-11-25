@@ -59,7 +59,9 @@ public class ListOfListsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                lists.add(document.toObject(ItemList.class));
+                                ItemList tempItem = document.toObject(ItemList.class);
+                                tempItem.setDocumentId(document.getId());
+                                lists.add(tempItem);
 
                                 ListOfListAdapter adapter = new ListOfListAdapter(getContext(), lists);
 

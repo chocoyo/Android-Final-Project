@@ -1,8 +1,13 @@
 package com.mhodges.finalproject;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.util.ArrayList;
 
 public class ItemList {
+    @DocumentId
+    private String documentId;
+
     private String name;
     private String userID;
     private ArrayList<Item> items;
@@ -42,4 +47,12 @@ public class ItemList {
     }
 
     public void setUserID(String userID) {this.userID = userID; }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
 }
