@@ -2,11 +2,11 @@ package com.mhodges.finalproject;
 
 import java.util.ArrayList;
 
-public class List {
+public class ItemList {
     private String name;
     private ArrayList<Item> items;
 
-    public List(){
+    public ItemList(){
         items = new ArrayList<>();
     }
 
