@@ -41,23 +41,6 @@ public class ListOfListsFragment extends Fragment {
 
     }
 
-    private void NewListButton(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List<ItemList> test = new ArrayList<>();
-
-        ItemList it = new ItemList(user.getUid());
-        it.setName("New Name");
-
-        ItemList it2 = new ItemList(user.getUid());
-        it2.setName("New Name2");
-
-        ItemList it3 = new ItemList(user.getUid());
-        it3.setName("New Name3");
-
-        test.add(it);
-        test.add(it3);
-        test.add(it2);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -12,9 +12,10 @@ public class ItemList {
         items = new ArrayList<>();
     }
 
-    public ItemList(String userID)
+    public ItemList(String name, String userID)
     {
         items = new ArrayList<>();
+        this.name = name;
         this.userID = userID;
     }
 
@@ -33,6 +34,8 @@ public class ItemList {
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
+    public void addItem(Item item) { this.items.add(item); }
 
     public String getUserID() {
         return userID;

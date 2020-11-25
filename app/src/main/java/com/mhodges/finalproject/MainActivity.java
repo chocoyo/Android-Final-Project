@@ -2,19 +2,23 @@ package com.mhodges.finalproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.List;
@@ -124,6 +129,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    private void createNewList(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Title");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setHint("Name Of List");
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Create with input.getText
+                ItemList list = new ItemList(input.getText().toString(), user.getUid());
+                FirebaseFirestore.getInstance().collection("lists").add(list);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
     @Override
     public void onBackPressed() {
         // 5 - Handle back click to close menu
@@ -157,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Toast.makeText(getApplicationContext(), "Sign Out Successful", Toast.LENGTH_LONG).show();
                             }
                         });
+                break;
+            case R.id.activity_main_drawer_new_list:
+                    createNewList();
                 break;
             default:
                 break;
