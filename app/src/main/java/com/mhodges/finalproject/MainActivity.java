@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -198,8 +197,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.activity_main_drawer_news:
-                break;
             case R.id.activity_main_drawer_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, ListOfListsFragment.newInstance()).commit();
                 break;
@@ -213,9 +210,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Toast.makeText(getApplicationContext(), "Sign Out Successful", Toast.LENGTH_LONG).show();
                             }
                         });
-                break;
-            case R.id.activity_main_drawer_new_list:
-                    createNewList();
                 break;
             default:
                 break;
@@ -231,11 +225,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment test = getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
         boolean returnVal = false;
         switch (item.getItemId()) {
-            case R.id.action_refresh:
+            case R.id.action_new:
                 if (test instanceof ListOfItemsFragment){
                     createNewItem(((ListOfItemsFragment) test).list);
+                    returnVal = true;
                 }
-                returnVal = true;
+                else if (test instanceof ListOfListsFragment){
+                    createNewList();
+                    returnVal = true;
+                }
                 break;
         }
         return returnVal;

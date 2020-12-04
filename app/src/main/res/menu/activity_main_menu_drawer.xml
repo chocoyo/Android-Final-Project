@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="none">
         <item
-            android:id="@+id/activity_main_drawer_news"
+            android:id="@+id/activity_main_drawer_back"
             android:icon="@drawable/abc_vector_test"
             android:title="Back" />
     </group>
@@ -14,9 +14,9 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/activity_main_drawer_new_list"
-                    android:icon="@drawable/ic_launcher_background"
-                    android:title="New List" />
+                android:id="@+id/activity_main_drawer_profile"
+                android:icon="@drawable/ic_launcher_background"
+                android:title="Show Lists" />
             </group>
         </menu>
     </item>
@@ -24,10 +24,6 @@
     <item android:title="Configuration">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/activity_main_drawer_profile"
-                    android:icon="@drawable/ic_launcher_background"
-                    android:title="Show Lists" />
                 <item
                     android:id="@+id/activity_main_drawer_settings"
                     android:icon="@drawable/ic_launcher_foreground"
