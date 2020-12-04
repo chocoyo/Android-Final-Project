@@ -2,14 +2,26 @@ package com.mhodges.finalproject;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.util.ArrayList;
+
 public class Item {
     @DocumentId
     private String documentId;
 
+    private String userID;
     private String name;
     private double price;
     private String description;
     private String link;
+
+    public Item(){}
+
+    public Item(String name, String userID)
+    {
+        this.name = name;
+        this.userID = userID;
+    }
+
 
 
     public String getName() {

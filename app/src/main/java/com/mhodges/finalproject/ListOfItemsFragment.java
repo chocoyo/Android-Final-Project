@@ -27,7 +27,7 @@ import java.util.List;
 public class ListOfItemsFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    private ItemList list;
+    public ItemList list;
 
 
     public static ListOfItemsFragment newInstance(ItemList list) {

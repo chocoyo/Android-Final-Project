@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -159,6 +160,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
+
+    private void createNewItem(ItemList list){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Title");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setHint("Name Of Item");
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Create with input.getText
+                Item item = new Item(input.getText().toString(), user.getUid());
+                FirebaseFirestore.getInstance().collection("lists").document(list.getDocumentId()).collection("items").add(item);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
     @Override
     public void onBackPressed() {
         // 5 - Handle back click to close menu
@@ -233,11 +265,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //to handle events
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //return super.onOptionsItemSelected(item);
+        Fragment test = getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);
         boolean returnVal = false;
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                Log.d("JG", "refresh menu item");
+                if (test instanceof ListOfItemsFragment){
+                    createNewItem(((ListOfItemsFragment) test).list);
+                }
                 returnVal = true;
                 break;
         }
