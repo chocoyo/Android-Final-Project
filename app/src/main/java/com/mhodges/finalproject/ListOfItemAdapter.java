@@ -25,13 +25,15 @@ public class ListOfItemAdapter extends RecyclerView.Adapter<ListOfItemAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.list_as_item_card, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.title.setText(items.get(position).getName());
+        holder.price.setText(String.valueOf(items.get(position).getPrice()));
+
     }
 
     @Override
@@ -41,9 +43,11 @@ public class ListOfItemAdapter extends RecyclerView.Adapter<ListOfItemAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
+        TextView price;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.txtTitle);
+            price = itemView.findViewById(R.id.txtPrice);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
