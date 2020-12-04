@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -16,9 +17,11 @@ public class ListOfItemAdapter extends RecyclerView.Adapter<ListOfItemAdapter.Vi
 
     private List<Item> items;
     private LayoutInflater layoutInflater;
+    private Context context;
 
     public ListOfItemAdapter(Context context, List<Item> items){
-        layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(context);
+        this.context = context;
         this.items = items;
     }
 
@@ -52,7 +55,8 @@ public class ListOfItemAdapter extends RecyclerView.Adapter<ListOfItemAdapter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("MH", "onClick: " + items.get(getAdapterPosition()).getName());
+                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.activity_main_frame_layout, ItemFragment.newInstance(items.get(getAdapterPosition()))).commit();
                 }
             });
         }
