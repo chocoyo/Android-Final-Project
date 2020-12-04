@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(DialogInterface dialog, int which) {
                 ItemList list = new ItemList(input.getText().toString(), user.getUid());
                 FirebaseFirestore.getInstance().collection("lists").add(list);
-
+                fragment.updateData();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

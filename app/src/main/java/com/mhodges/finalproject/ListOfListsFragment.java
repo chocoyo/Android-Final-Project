@@ -27,6 +27,7 @@ import java.util.List;
 public class ListOfListsFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
+    private List<ItemList> lists;
 
     public static ListOfListsFragment newInstance() {
         return new ListOfListsFragment();
@@ -45,9 +46,14 @@ public class ListOfListsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_of_lists, container, false);
         recyclerView = view.findViewById(R.id.rvDataList);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        updateData();
 
-        List<ItemList> lists = new ArrayList<>();
+        return view;
+    }
+
+    public void updateData(){
+        lists = new ArrayList<>();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         db.collection("lists").whereEqualTo("userID", user.getUid())
                 .get()
@@ -71,7 +77,5 @@ public class ListOfListsFragment extends Fragment {
                         }
                     }
                 });
-
-        return view;
     }
 }
