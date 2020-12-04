@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -159,23 +158,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void createNewItem(ListOfItemsFragment fragment){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("New Item");
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        input.setHint("Name Of Item");
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        View view = getLayoutInflater().inflate(R.layout.alert_dialog_new_item, null);
+        builder.setView(view);
 
         // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Item item = new Item(input.getText().toString(), user.getUid());
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Item item = new Item(((EditText)view.findViewById(R.id.etName)).getText().toString(), user.getUid());
+                item.setLink(((EditText)view.findViewById(R.id.etLink)).getText().toString());
+                item.setPrice(Integer.parseInt(((EditText)view.findViewById(R.id.etPrice)).getText().toString()));
                 FirebaseFirestore.getInstance().collection("lists").document(fragment.list.getDocumentId()).collection("items").add(item);
                 fragment.updateData();
             }
         });
+
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
