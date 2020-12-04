@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void createNewList(){
+    private void createNewList(ListOfListsFragment fragment){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("New List");
 
@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(DialogInterface dialog, int which) {
                 ItemList list = new ItemList(input.getText().toString(), user.getUid());
                 FirebaseFirestore.getInstance().collection("lists").add(list);
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
-    private void createNewItem(ItemList list){
+    private void createNewItem(ListOfItemsFragment fragment){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("New Item");
 
@@ -171,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Item item = new Item(input.getText().toString(), user.getUid());
-                FirebaseFirestore.getInstance().collection("lists").document(list.getDocumentId()).collection("items").add(item);
+                FirebaseFirestore.getInstance().collection("lists").document(fragment.list.getDocumentId()).collection("items").add(item);
+                fragment.updateData();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -227,11 +229,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.action_new:
                 if (test instanceof ListOfItemsFragment){
-                    createNewItem(((ListOfItemsFragment) test).list);
+                    createNewItem((ListOfItemsFragment) test);
                     returnVal = true;
                 }
                 else if (test instanceof ListOfListsFragment){
-                    createNewList();
+                    createNewList((ListOfListsFragment) test);
                     returnVal = true;
                 }
                 break;

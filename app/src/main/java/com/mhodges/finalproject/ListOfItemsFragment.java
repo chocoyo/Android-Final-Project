@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,8 @@ public class ListOfItemsFragment extends Fragment {
     public ItemList list;
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
+    private ListOfItemAdapter adapter;
+    private List<Item> items;
 
 
     public ListOfItemsFragment(ItemList list){
@@ -51,9 +52,15 @@ public class ListOfItemsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_of_items, container, false);
         recyclerView = view.findViewById(R.id.rvDataList);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        updateData();
 
-        List<Item> lists = new ArrayList<>();
+        return view;
+    }
+
+
+    public void updateData()
+    {
+        items = new ArrayList<>();
 
         //Get all items in the list
         db.collection("lists").document(list.getDocumentId()).collection("items")
@@ -63,9 +70,9 @@ public class ListOfItemsFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                lists.add(document.toObject(Item.class));
+                                items.add(document.toObject(Item.class));
 
-                                ListOfItemAdapter adapter = new ListOfItemAdapter(getContext(), lists);
+                                adapter = new ListOfItemAdapter(getContext(), items);
 
                                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
                                 recyclerView.setLayoutManager(gridLayoutManager);
@@ -76,7 +83,5 @@ public class ListOfItemsFragment extends Fragment {
                         }
                     }
                 });
-
-        return view;
     }
 }
