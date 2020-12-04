@@ -14,15 +14,13 @@ public class Item {
     private String description;
     private String link;
 
-    public Item(){}
+    public Item(){ }
 
     public Item(String name, String userID)
     {
         this.name = name;
         this.userID = userID;
     }
-
-
 
     public String getName() {
         return name;

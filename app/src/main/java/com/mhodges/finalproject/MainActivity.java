@@ -51,18 +51,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
+        //Get signed in user or make user sign in
         mAuth = FirebaseAuth.getInstance();
-
         if (mAuth.getCurrentUser() == null)
         {
             // Choose authentication providers
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build(),
                     new AuthUI.IdpConfig.GoogleBuilder().build());
-
 
             // Create and launch sign-in intent
             startActivityForResult(
@@ -77,14 +73,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setUpUIForUser(user);
         }
 
+        //Configure Toolbar
+        this.toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        setSupportActionBar(toolbar);
 
-        this.configureToolBar();
+        //Configure NavDrawer
+        this.drawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-        this.configureDrawerLayout();
-
-        this.configureNavigationView();
+        //Configure NavView
+        this.navigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
+    //Sets up UI when user is logged in
     private void setUpUIForUser(FirebaseUser user){
         NavigationView navigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -99,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -108,20 +111,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 setUpUIForUser(user);
-                // ...
             } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+                Toast.makeText(this, "Sign In Failed, Please Try Again Later", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    //to inflate the xml menu file
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -129,10 +127,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
     private void createNewList(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("New List");
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -145,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Create with input.getText
                 ItemList list = new ItemList(input.getText().toString(), user.getUid());
                 FirebaseFirestore.getInstance().collection("lists").add(list);
             }
@@ -160,10 +156,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.show();
     }
 
-
     private void createNewItem(ItemList list){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("New Item");
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -176,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Create with input.getText
                 Item item = new Item(input.getText().toString(), user.getUid());
                 FirebaseFirestore.getInstance().collection("lists").document(list.getDocumentId()).collection("items").add(item);
             }
@@ -193,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        // 5 - Handle back click to close menu
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -204,11 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
-        // 4 - Handle Navigation Item Click
-        int id = item.getItemId();
-
-        switch (id){
+        switch (item.getItemId()){
             case R.id.activity_main_drawer_news:
                 break;
             case R.id.activity_main_drawer_profile:
@@ -237,32 +226,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    // ---------------------
-    // CONFIGURATION
-    // ---------------------
-
-    // 1 - Configure Toolbar
-    private void configureToolBar(){
-        this.toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
-        setSupportActionBar(toolbar);
-    }
-
-    // 2 - Configure Drawer Layout
-    private void configureDrawerLayout(){
-        this.drawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }
-
-    // 3 - Configure NavigationView
-    private void configureNavigationView(){
-        this.navigationView = (NavigationView) findViewById(R.id.activity_main_nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-
-    //to handle events
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Fragment test = getSupportFragmentManager().findFragmentById(R.id.activity_main_frame_layout);

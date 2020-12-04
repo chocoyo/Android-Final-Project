@@ -25,17 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfItemsFragment extends Fragment {
+    public ItemList list;
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    public ItemList list;
 
-
-    public static ListOfItemsFragment newInstance(ItemList list) {
-        return new ListOfItemsFragment(list);
-    }
 
     public ListOfItemsFragment(ItemList list){
         this.list = list;
+    }
+
+    public static ListOfItemsFragment newInstance(ItemList list) {
+        return new ListOfItemsFragment(list);
     }
 
     @Override
@@ -51,11 +51,11 @@ public class ListOfItemsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list_of_items, container, false);
         recyclerView = view.findViewById(R.id.rvDataList);
 
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         List<Item> lists = new ArrayList<>();
 
+        //Get all items in the list
         db.collection("lists").document(list.getDocumentId()).collection("items")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -72,7 +72,7 @@ public class ListOfItemsFragment extends Fragment {
                                 recyclerView.setAdapter(adapter);
                             }
                         } else {
-                            Toast.makeText(getContext(), "Error Retriving Lists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Error Retrieving Lists", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

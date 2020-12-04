@@ -17,16 +17,14 @@ import java.util.List;
 
 public class ListOfListAdapter extends RecyclerView.Adapter<ListOfListAdapter.ViewHolder> {
 
-    List<ItemList> items;
-    LayoutInflater layoutInflater;
+    private List<ItemList> items;
+    private LayoutInflater layoutInflater;
     private Context context;
-
 
     public ListOfListAdapter(Context context, List<ItemList> items){
         layoutInflater = LayoutInflater.from(context);
         this.items = items;
         this.context = context;
-
     }
 
     @NonNull

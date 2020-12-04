@@ -35,11 +35,8 @@ public class ListOfListsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         db = FirebaseFirestore.getInstance();
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
