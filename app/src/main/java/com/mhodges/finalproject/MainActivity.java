@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Item item = new Item(((EditText)view.findViewById(R.id.etName)).getText().toString(), user.getUid());
                 item.setLink(((EditText)view.findViewById(R.id.etLink)).getText().toString());
-                item.setPrice(Integer.parseInt(((EditText)view.findViewById(R.id.etPrice)).getText().toString()));
+                item.setPrice(Double.parseDouble((((EditText)view.findViewById(R.id.etPrice)).getText().toString())));
                 FirebaseFirestore.getInstance().collection("lists").document(fragment.list.getDocumentId()).collection("items").add(item);
                 fragment.updateData();
             }
