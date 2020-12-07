@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+//Fragment for displaying an item
 public class ItemFragment extends Fragment {
     private WebView browser;
     private Item item;

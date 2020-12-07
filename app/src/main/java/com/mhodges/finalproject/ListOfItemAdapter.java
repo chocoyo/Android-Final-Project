@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+//Adapter for showing items in grid
 public class ListOfItemAdapter extends RecyclerView.Adapter<ListOfItemAdapter.ViewHolder> {
 
     private List<Item> items;

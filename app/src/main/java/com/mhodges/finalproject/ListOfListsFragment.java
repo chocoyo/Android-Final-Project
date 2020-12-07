@@ -26,7 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//Fragment for showing list of lists
 public class ListOfListsFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;

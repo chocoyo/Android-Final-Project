@@ -4,6 +4,7 @@ import com.google.firebase.firestore.DocumentId;
 
 import java.util.ArrayList;
 
+//Model for an item in firebase
 public class Item {
     @DocumentId
     private String documentId;
