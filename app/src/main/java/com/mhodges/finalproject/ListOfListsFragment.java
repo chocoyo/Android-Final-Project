@@ -1,9 +1,11 @@
 package com.mhodges.finalproject;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -51,11 +54,20 @@ public class ListOfListsFragment extends Fragment {
         return view;
     }
 
+
+    private Query.Direction getQueryDirection(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (sharedPreferences.getString("sortingDirection", "asc").equals("asc"))
+            return Query.Direction.ASCENDING;
+        else
+            return Query.Direction.DESCENDING;
+    }
+
     public void updateData(){
         lists = new ArrayList<>();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        db.collection("lists").whereEqualTo("userID", user.getUid())
+        db.collection("lists").whereEqualTo("userID", user.getUid()).orderBy("timestamp", getQueryDirection())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

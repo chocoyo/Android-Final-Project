@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ItemList list = new ItemList(input.getText().toString(), user.getUid());
+                list.setTimestamp(FieldValue.serverTimestamp());
                 FirebaseFirestore.getInstance().collection("lists").add(list);
                 fragment.updateData();
             }
@@ -169,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Item item = new Item(((EditText)view.findViewById(R.id.etName)).getText().toString(), user.getUid());
                 item.setLink(((EditText)view.findViewById(R.id.etLink)).getText().toString());
                 item.setPrice(Double.parseDouble((((EditText)view.findViewById(R.id.etPrice)).getText().toString())));
+                item.setTimestamp(FieldValue.serverTimestamp());
                 FirebaseFirestore.getInstance().collection("lists").document(fragment.list.getDocumentId()).collection("items").add(item);
                 fragment.updateData();
             }
@@ -197,10 +200,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.activity_main_drawer_profile:
+            case R.id.activity_main_drawer_show_lists:
                 getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_frame_layout, ListOfListsFragment.newInstance()).commit();
                 break;
-            case R.id.activity_main_drawer_settings:
+            case R.id.activity_main_drawer_sign_out:
                 AuthUI.getInstance()
                         .signOut(this)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -210,6 +213,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Toast.makeText(getApplicationContext(), "Sign Out Successful", Toast.LENGTH_LONG).show();
                             }
                         });
+                break;
+            case R.id.activity_main_drawer_settings:
+                Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(settingsIntent, 1);
                 break;
             default:
                 break;

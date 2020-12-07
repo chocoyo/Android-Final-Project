@@ -13,6 +13,7 @@ public class Item {
     private double price;
     private String description;
     private String link;
+    private Object timestamp;
 
     public Item(){ }
 
@@ -60,5 +61,13 @@ public class Item {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
+    }
+
+    public Object getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Object timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -11,6 +11,7 @@ public class ItemList {
     private String name;
     private String userID;
     private ArrayList<Item> items;
+    private Object timestamp;
 
     public ItemList()
     {
@@ -54,5 +55,13 @@ public class ItemList {
 
     public void setDocumentId(String documentId) {
         this.documentId = documentId;
+    }
+
+    public Object getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Object timestamp) {
+        this.timestamp = timestamp;
     }
 }
