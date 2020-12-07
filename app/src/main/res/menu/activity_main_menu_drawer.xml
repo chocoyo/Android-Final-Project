@@ -14,7 +14,7 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                android:id="@+id/activity_main_drawer_profile"
+                android:id="@+id/activity_main_drawer_show_lists"
                 android:icon="@drawable/ic_launcher_background"
                 android:title="Show Lists" />
             </group>
@@ -26,6 +26,10 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/activity_main_drawer_settings"
+                    android:icon="@drawable/ic_launcher_foreground"
+                    android:title="Settings" />
+                <item
+                    android:id="@+id/activity_main_drawer_sign_out"
                     android:icon="@drawable/ic_launcher_foreground"
                     android:title="Sign Out" />
             </group>

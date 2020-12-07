@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="App Settings">
+        <ListPreference
+            app:entries="@array/sorting_entries"
+            app:entryValues="@array/sorting_values"
+            app:key="sortingDirection"
+            app:defaultValue="asc"
+            app:title="Sort By"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Account Settings">
+        <SwitchPreferenceCompat
+            app:key="usePhoto"
+            app:summaryOff="Your google account photo will not be displayed in app"
+            app:summaryOn="Your google account photo will be displayed in app"
+            app:title="Display Google Account Photo" />
+        <Preference
+            android:title="Delete Account"
+            android:key="deleteAccount"
+            android:summary="This will delete your account from our databases"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>
